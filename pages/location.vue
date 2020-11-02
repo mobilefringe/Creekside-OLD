@@ -1,5 +1,5 @@
 <template>
-  <div class="contact-us-container">
+  <div class="contact-us-container location">
     <inside-page-banner :pageBanner="pageBanner" pageTitle="Location"></inside-page-banner>
 
     <div class="main_container">

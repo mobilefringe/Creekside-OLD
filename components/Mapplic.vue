@@ -231,7 +231,7 @@ export default {
           //     location.description += '</ul>' + '</p>'
           //   }
         }
-        location.zoom = 5
+        location.zoom = 4.5
       })
     })
 

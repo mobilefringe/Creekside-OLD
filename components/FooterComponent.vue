@@ -10,7 +10,7 @@
               id="userName"
               v-model="newsletter_name"
               type="text"
-              placeholder="First Name*"
+              placeholder="Name*"
               class="newsletter_control"
               required
             />
@@ -37,7 +37,7 @@
           </p>
           <div class="footer_links">
             <p>
-              <a href="/pages/creekside-privacy-policy" target="_blank">Privacy Policy</a>
+              <a href="/pages/creekside-privacy-policy">Privacy Policy</a>
             </p>
           </div>
         </div>

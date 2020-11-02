@@ -6,7 +6,7 @@
       <div class="row">
         <div class="col-md-12">
           <breadcrumb-component
-            page_name="Speciality Leasing"
+            page_name="Specialty Leasing"
             :has_parent="false"
           ></breadcrumb-component>
         </div>
@@ -89,7 +89,7 @@ export default {
     ]),
     pageBanner() {
       var pageBanner = null
-      var temp_repo = this.findBannerByName('Leasing Banner')
+      var temp_repo = this.findBannerByName('Specialty Leasing Banner')
       if (
         temp_repo &&
         temp_repo.gallery_items &&

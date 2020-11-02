@@ -781,10 +781,10 @@ a {
                 font-size: 1.2rem;
             }
             .banner_btn {
-                padding: 11px 30px;
+                padding: 7px 30px;
                 display: inline-block;
                 border: 1px solid #fff;
-                background: transparent;
+                background: $secondary;
                 font-size: 0.9rem;
                 color: #fff;
                 text-transform: uppercase;
@@ -792,6 +792,9 @@ a {
                 &:hover {
                     color: #fff;
                 }
+            }
+            .animated_btn:before {
+                background: #000;
             }
         }
     }
@@ -917,14 +920,14 @@ a {
                 position: absolute;
                 bottom: 10px;
                 left: 10px;
-                font-size: 0.875rem;
+                font-size: 0.7rem;
                 line-height: normal;
                 color: #000;
             }
             .insta_icon {
                 position: absolute;
-                right: 10px;
-                bottom: 10px;
+                right: 0px;
+                bottom: 0px;
                 font-size: 1.038rem;
                 line-height: normal;
                 color: #000;
@@ -1127,7 +1130,7 @@ $anim-speed: 0.3s;
         @include responsive-ratio(17,
         12);
         @include background();
-        background-size: cover;
+        background-size: contain;
         width: 100%;
         overflow: hidden;
     }
@@ -1520,10 +1523,8 @@ textarea.form-control {
     }
 }
 
-.leasing_main {
-    strong {
-        color: #195573;
-    }
+strong {
+    color: $primary;
 }
 
 
@@ -2408,7 +2409,7 @@ input[type='search'] {
 
 @media (max-width: 768px) {
     .main-content-container {
-        margin-top: 166px;
+        margin-top: 121px;
         min-height: calc(100vh - 133px);
     }
     .visible_phone {
@@ -2439,8 +2440,8 @@ input[type='search'] {
         display: none;
     }
     #header .site_logo {
-        padding: 0 0 38px 0;
-        max-width: 285px;
+        padding: 20px 0;
+        max-width: 180px;
     }
     #primary_nav {
         display: none;
@@ -2907,6 +2908,9 @@ input[type='search'] {
 @media (max-width: 325px) {
     .page-content {
         margin-top: 85px;
+    }
+    .main-content-container {
+        margin-top: 114px;
     }
     #header .site_logo {
         max-width: 162px;

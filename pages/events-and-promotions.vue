@@ -212,8 +212,7 @@ export default {
             .tz(value.start_date, _this.timezone)
             .format('MM-YYYY')
           if (start_month <= today_month) {
-            // value.month = moment.tz(this.timezone).format("MMMM YYYY");
-            value.month = 'Ongoing'
+            value.month = moment.tz(_this.timezone).format("MMMM YYYY");
             month_heading = today_month
           } else {
             value.month = moment

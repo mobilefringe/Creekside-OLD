@@ -60,7 +60,7 @@
               >
                 <i class="fab fa-facebook-f social_icons" aria-hidden="true"></i>
               </ShareNetwork>
-              <ShareNetwork
+              <!-- <ShareNetwork
                 network="twitter"
                 class="twitter"
                 :title="currentPromo.name"
@@ -68,7 +68,7 @@
                 :twitter-user="twitterUsername"
               >
                 <i class="fab fa-twitter social_icons" aria-hidden="true"></i>
-              </ShareNetwork>
+              </ShareNetwork> -->
               <ShareNetwork
                 network="email"
                 class="email"
@@ -76,7 +76,7 @@
                 :description="removeTags(currentPromo.description)"
                 :url="shareURL(currentPromo.slug, 'events')"
               >
-                <i class="fas fa-envelope-open social_icons" aria-hidden="true"></i>
+                <i class="fas fa-envelope social_icons" aria-hidden="true"></i>
               </ShareNetwork>
             </div>
           </div>
