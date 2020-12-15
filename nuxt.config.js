@@ -100,13 +100,13 @@ module.exports = {
 
     /* Google Analytics */
     'google-analytics': {
-        id: 'UA-69974835-8'
+        id: 'UA-69974835-17'
     },
 
     /* Sitemap Configuration */
     sitemap: {
         generate: true,
-        hostname: '', // UPDATE HOST NAME
+        hostname: 'https://creeksidetowncenter.com/', // UPDATE HOST NAME
         routes() {
             return axios.get(MM_API_URL + '/site_map_data').then(res =>
                 res.data.meta_data

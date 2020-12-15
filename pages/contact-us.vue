@@ -246,7 +246,7 @@ export default {
           var vm = this
 
           let send_data = new FormData()
-          send_data.append('mailto', 'mithun@mobilefringe.com') // smartinez@vestar.com,hmccue@vestar.com
+          send_data.append('mailto', 'smartinez@vestar.com,hmccue@vestar.com') // smartinez@vestar.com,hmccue@vestar.com
           send_data.append('from_email', this.form_data.email)
           send_data.append(
             'subject',

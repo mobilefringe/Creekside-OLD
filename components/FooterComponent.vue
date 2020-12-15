@@ -10,7 +10,7 @@
               id="userName"
               v-model="newsletter_name"
               type="text"
-              placeholder="Name*"
+              placeholder="First Name*"
               class="newsletter_control"
               required
             />
