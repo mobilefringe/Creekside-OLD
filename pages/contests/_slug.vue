@@ -356,29 +356,33 @@ export default {
     },
     validateBeforeSubmit(form) {
       this.$validator.validateAll().then(result => {
-        // if no error submit the form
         if (result) {
           var vm = this
-          // /properties/:property_id/contest/:contest_id
-          var contest_entry = {}
-          contest_entry.json = this.form_data
-          var vm = this
-          // properties
+          let formData = new FormData()
+          _.forOwn(this.form_data, function (value, key) {
+            console.log(value, key)
+            formData.append('json[' + key + ']', value)
+          })
+          if (this.currentContest.use_contest_image) {
+            formData.append('contest_photo', this.contestPhoto)
+          }
+          
           var url =
             process.env.MM_API_URL + 'contest/' + this.currentContest.slug
           $.ajax({
             url: url,
             type: 'POST',
-            data: contest_entry,
-            success: function(data) {
+            processData: false,
+            contentType: false,
+            data: formData,
+            success: function (data) {
               vm.formSuccess = true
             },
-            error: function(data) {
+            error: function (data) {
               vm.formError = true
-            }
+            },
           })
         } else {
-          // this.formError = true
           return false
         }
       })
