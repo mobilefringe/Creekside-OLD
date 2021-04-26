@@ -17,17 +17,16 @@ export default {
     return {
       tempSEO: {},
       currentSEO: {},
-      deliveryFilter: 8238,
       breadcrumb: {
         page_name: 'Delivery',
         has_parent: true,
         parent_name: 'Directory',
-        parent_slug: '/stores'
-      }
+        parent_slug: '/stores',
+      },
     }
   },
   components: {
-    StorelistComponent: () => import('~/components/StorelistComponent.vue')
+    StorelistComponent: () => import('~/components/StorelistComponent.vue'),
   },
   async asyncData({ store, params, route }) {
     try {
@@ -35,10 +34,10 @@ export default {
         store.dispatch('LOAD_SEO', { url: '/delivery' }),
         store.dispatch('getMMData', { resource: 'stores' }),
         store.dispatch('getMMData', { resource: 'categories' }),
-        store.dispatch('getMMData', { resource: 'banners' })
+        store.dispatch('getMMData', { resource: 'banners' }),
       ])
       return {
-        tempSEO: results[0].data
+        tempSEO: results[0].data,
       }
     } catch (e) {
       console.log(e.message)
@@ -53,7 +52,7 @@ export default {
     ...mapGetters([
       'findBannerByName',
       'processedStores',
-      'processedCategories'
+      'processedCategories',
     ]),
     pageBanner() {
       var pageBanner = null
@@ -72,6 +71,15 @@ export default {
       }
       this.pageTitle = pageBanner.name
       return pageBanner
+    },
+    deliveryFilter() {
+      var category = _.find(this.processedCategories, function(o) {
+        return (
+          !o.parent_category_id &&
+          (o.name == 'Delivery' || o.slug === 'delivery')
+        )
+      })
+      return category ? category.id : null
     },
     allStores() {
       var store_list = []
@@ -94,7 +102,9 @@ export default {
             flags.push(tag)
           })
         }
-        if (value.is_new_store) {
+        if (value.is_temporarily_closed) {
+          flags.push('Temporarily Closed')
+        } else if (value.is_new_store) {
           flags.push('New')
         } else if (value.is_coming_soon_store) {
           flags.push('Coming Soon')
@@ -132,7 +142,7 @@ export default {
       cats = _.map(_.orderBy(cats, ['name']), 'name')
       cats.unshift('All')
       return cats
-    }
-  }
+    },
+  },
 }
 </script>

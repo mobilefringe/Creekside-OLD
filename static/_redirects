@@ -1,1 +1,4 @@
+# domain redirects
+https://creek-side.netlify.app/* https://creeksidetowncenter.com/:splat 301!
+
 /*    /index.html   200

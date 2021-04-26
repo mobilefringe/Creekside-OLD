@@ -17,17 +17,16 @@ export default {
     return {
       tempSEO: {},
       currentSEO: {},
-      dineFilter: 6174,
       breadcrumb: {
         page_name: 'Directory',
         has_parent: false,
         parent_name: '',
-        parent_slug: ''
-      }
+        parent_slug: '',
+      },
     }
   },
   components: {
-    StorelistComponent: () => import('~/components/StorelistComponent.vue')
+    StorelistComponent: () => import('~/components/StorelistComponent.vue'),
   },
   async asyncData({ store, params, route }) {
     try {
@@ -35,10 +34,10 @@ export default {
         store.dispatch('LOAD_SEO', { url: '/stores' }),
         store.dispatch('getMMData', { resource: 'stores' }),
         store.dispatch('getMMData', { resource: 'categories' }),
-        store.dispatch('getMMData', { resource: 'banners' })
+        store.dispatch('getMMData', { resource: 'banners' }),
       ])
       return {
-        tempSEO: results[0].data
+        tempSEO: results[0].data,
       }
     } catch (e) {
       console.log(e.message)
@@ -53,7 +52,7 @@ export default {
     ...mapGetters([
       'findBannerByName',
       'processedStores',
-      'processedCategories'
+      'processedCategories',
     ]),
     pageBanner() {
       var pageBanner = null
@@ -73,6 +72,14 @@ export default {
       this.pageTitle = pageBanner.name
       return pageBanner
     },
+    dineFilter() {
+      var category = _.find(this.processedCategories, function(o) {
+        return (
+          !o.parent_category_id && (o.name == 'Dining' || o.slug === 'dining')
+        )
+      })
+      return category ? category.id : null
+    },
     allStores() {
       var store_list = []
       var vm = this
@@ -91,7 +98,9 @@ export default {
             flags.push(tag)
           })
         }
-        if (value.is_new_store) {
+        if (value.is_temporarily_closed) {
+          flags.push('Temporarily Closed')
+        } else if (value.is_new_store) {
           flags.push('New')
         } else if (value.is_coming_soon_store) {
           flags.push('Coming Soon')
@@ -114,22 +123,31 @@ export default {
       return store_list
     },
     dropDownCats() {
-      var vm = this;
+      var vm = this
       var categories = this.processedCategories
-      var storeCats = this.processedStores.map(a => a.categories);
-      var uniqueStoreCats = Array.from(new Set(storeCats.join().split(",").map(x=>+x).sort()));
+      var storeCats = this.processedStores.map((a) => a.categories)
+      var uniqueStoreCats = Array.from(
+        new Set(
+          storeCats
+            .join()
+            .split(',')
+            .map((x) => +x)
+            .sort()
+        )
+      )
       var cats = _.filter(categories, function(o) {
         return (
           o.name &&
           o.name.length > 0 &&
-          !o.parent_category_id && uniqueStoreCats.includes(o.id)
+          !o.parent_category_id &&
+          uniqueStoreCats.includes(o.id)
         )
       })
 
       cats = _.map(_.orderBy(cats, ['name']), 'name')
       cats.unshift('All')
       return cats
-    }
-  }
+    },
+  },
 }
 </script>

@@ -35,7 +35,11 @@
             <div class="margin_20 center" v-if="currentStore.website">
               <a class="store_details_phone" :href="currentStore.website" target="_blank">Website</a>
             </div>
-            <ul v-if="storeHours.length > 0" class="store_details_hours_list">
+            <div
+              v-if="currentStore.is_temporarily_closed"
+              class="store_details_hours_list text-center"
+            >Temporarily Closed</div>
+            <ul v-else-if="storeHours && storeHours.length > 0" class="store_details_hours_list">
               <li
                 v-for="hour in storeHours"
                 :class="{ 'today': hour.day_of_week == todaysHour.day_of_week}"
@@ -200,13 +204,13 @@ export default {
   components: {
     MapplicMap: () => import('~/components/Mapplic.vue'),
     InsidePageBanner: () => import('~/components/InsidePageBanner.vue'),
-    BreadcrumbComponent: () => import('~/components/BreadcrumbComponent.vue')
+    BreadcrumbComponent: () => import('~/components/BreadcrumbComponent.vue'),
   },
   async asyncData({ store, route, error }) {
     try {
       let results = await Promise.all([
         store.dispatch('LOAD_SEO', {
-          url: route.fullPath
+          url: route.fullPath,
         }),
         store.dispatch('LOAD_PAGE_DATA', {
           url:
@@ -214,18 +218,18 @@ export default {
             '/store_by_slug/' +
             route.params.slug +
             '?api_key=' +
-            process.env.API_KEY
+            process.env.API_KEY,
         }),
         store.dispatch('LOAD_PAGE_DATA', {
           url:
-            process.env.MM_API_URL + '/mapplic?api_key=' + process.env.API_KEY
+            process.env.MM_API_URL + '/mapplic?api_key=' + process.env.API_KEY,
         }),
-        store.dispatch('getMMData', { resource: 'categories' })
+        store.dispatch('getMMData', { resource: 'categories' }),
       ])
       return {
         tempSEO: results[0].data,
         currentStore: results[1].data,
-        mapData: results[2].data
+        mapData: results[2].data,
       }
     } catch (e) {
       console.log(e.message)
@@ -249,7 +253,7 @@ export default {
       hasGrubhub: false,
       hasPostmates: false,
       hasRestaurantDelivery: false,
-      hasUberEats: false
+      hasUberEats: false,
     }
   },
   beforeRouteUpdate(to, from, next) {
@@ -270,7 +274,7 @@ export default {
       'findBannerByName',
       'findCategoryById',
       'processedCategories',
-      'findPromoById'
+      'findPromoById',
     ]),
     pageBanner() {
       var pageBanner = null
@@ -303,7 +307,7 @@ export default {
       })
       ordered_hours.push(sunday)
       return ordered_hours
-    }
+    },
   },
   methods: {
     updateCurrentStore() {
@@ -327,73 +331,49 @@ export default {
           this.currentStore.website = 'http://' + this.currentStore.website
         }
         // DELIVERY
-        var delivery_category = 8238
+        var delivery_category = _.find(this.processedCategories, function(o) {
+          return o.slug === 'delivery'
+        })
         var categories = this.currentStore.categories
-        var subcategories = _.map(
-          _.filter(this.processedCategories, function(o) {
-            return o.parent_category_id === delivery_category
-          }),
-          'id'
-        )
-        if (
-          _.includes(categories, delivery_category) &&
-          !_.isEmpty(subcategories)
-        ) {
-          this.deliveryAvailable = true
-          if (_.includes(categories, 8250)) {
-              this.hasUberEats = true;
-          }
-          if (_.includes(categories, 8239)) {
-              this.hasDoordash = true;
-          }
-          if (_.includes(categories, 8240)) {
-              this.hasGrubhub = true;
-          }
-          if (_.includes(categories, 8242)) {
-              this.hasPostmates = true;   
-          }
-          if (_.includes(categories, 8243)) {
-              this.hasRestaurantDelivery = true;   
+        var subcategories = _.filter(this.processedCategories, function(o) {
+          return o.parent_category_id === delivery_category.id
+        })
+
+        if (delivery_category && !_.isEmpty(subcategories)) {
+          var _this = this
+
+          _.forEach(subcategories, function(val) {
+            if (_.includes(_this.currentStore.categories, val.id)) {
+              if (_.includes(val.slug, 'uber')) {
+                _this.hasUberEats = true
+              }
+
+              if (_.includes(val.slug, 'doordash')) {
+                _this.hasDoordash = true
+              }
+              if (_.includes(val.slug, 'grubhub')) {
+                _this.hasGrubhub = true
+              }
+              if (_.includes(val.slug, 'postmates')) {
+                _this.hasPostmates = true
+              }
+              if (_.includes(val.slug, 'restaurant-delivery')) {
+                _this.hasRestaurantDelivery = true
+              }
+            }
+          })
+          if (
+            this.hasUberEats ||
+            this.hasDoordash ||
+            this.hasPostmates ||
+            this.hasRestaurantDelivery
+          ) {
+            this.deliveryAvailable = true
           }
         }
 
-        var temp_promo = []
-        // _.forEach(this.currentStore.promotions, function(value, key) {
-        //   var current_promo = vm.findPromoById(value)
-
-        //   if (_.includes(current_promo.image_url, 'missing')) {
-        //     current_promo.image_url =
-        //       '//codecloud.cdn.speedyrails.net/sites/5de41d386e6f647ab13c0000/image/png/1529532181000/promoplaceholder2@2x.png'
-        //   }
-
-        //   temp_promo.push(current_promo)
-        // })
         this.storePromotions = this.currentStore.promotions
-
-        var vm = this
-        var temp_event = []
-        // _.forEach(this.currentStore.events, function(value, key) {
-        //   var current_event = vm.findEventById(value)
-
-        //   if (_.includes(current_event.image_url, 'missing')) {
-        //     current_event.image_url =
-        //       '//codecloud.cdn.speedyrails.net/sites/5de41d386e6f647ab13c0000/image/png/1529532187000/eventsplaceholder2@2x.png'
-        //   }
-
-        //   temp_event.push(current_event)
-        // })
-        this.storeEvents = this.currentStore.events
-
-        // var vm = this
-        // var temp_coupon = []
-        // _.forEach(this.currentStore.coupons, function(value, key) {
-        //   var current_coupon = vm.findCouponById(value)
-        //   // if (_.includes(current_coupon.image_url, 'missing')) {
-        //   //     current_coupon.image_url = "http://placehold.it/1560x800/757575";
-        //   // }
-
-        //   temp_coupon.push(current_coupon)
-        // })
+        this.storeEvents = this.currentStore.storeEvents
 
         // Update store hours with holiday hours
         var _this = this
@@ -524,7 +504,7 @@ export default {
         })
         if (map_id) this.$refs.map_ref.showLocation(map_id.id)
       }
-    }
-  }
+    },
+  },
 }
 </script>
