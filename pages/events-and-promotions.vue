@@ -241,7 +241,7 @@ export default {
           //     '//codecloud.cdn.speedyrails.net/sites/5de41d386e6f647ab13c0000/image/png/1542644938364/gvr_events.png'
           // }
 
-          value.description_short = _.truncate(value.description, {
+          value.description_short = _.truncate(value.plain_text_description, {
             length: 250,
             separator: ' '
           })
@@ -288,7 +288,7 @@ export default {
           //     '//codecloud.cdn.speedyrails.net/sites/5de41d386e6f647ab13c0000/image/png/1542644978329/gvr_promos.png'
           // }
 
-          value.description_short = _.truncate(value.description, {
+          value.description_short = _.truncate(value.plain_text_description, {
             length: 250,
             separator: ' '
           })

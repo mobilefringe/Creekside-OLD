@@ -52,7 +52,7 @@
           </p>
           <h2 class="event_name">{{ item.name }}</h2>
           <p class="event_dates">{{ item.end_date | moment("MMMM D", timezone)}}</p>
-          <div class="event_desc" v-html="item.description_short"></div>
+          <div class="event_desc" v-html="item.plain_text_description"></div>
           <nuxt-link :to="'/jobs/'+item.slug">
             <div class="animated_btn event_link">
               View Job Posting

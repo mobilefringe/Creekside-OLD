@@ -29,7 +29,7 @@
               v-if="isMultiDay(currentPromo)"
             >{{ currentPromo.start_date | moment("MMMM D", timezone)}} - {{ currentPromo.end_date | moment("MMMM D", timezone)}}</p>
             <p class="event_dates" v-else>{{ currentPromo.start_date | moment("MMMM D", timezone)}}</p>
-            <div class="event_desc event_details" v-html="currentPromo.rich_description"></div>
+            <div class="event_desc event_details" v-html="currentPromo.description"></div>
           </div>
           <div class="col-md-4">
             <a :href="currentPromo.image_url" :data-lightbox="currentPromo.name">
