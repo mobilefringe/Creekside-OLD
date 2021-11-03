@@ -22,13 +22,13 @@
         </div>
       </div>
       <div v-if="toggleEvents">
-        <div v-if="eventList" v-for="(events, key) in eventList">
+        <div v-if="eventList" v-for="(events, key) in eventList" :key="key">
           <div class="row">
             <div class="col-md-12">
               <h2 class="event_date_heading">{{ key }}</h2>
             </div>
           </div>
-          <div class="row event_container" v-for="event in events">
+          <div class="row event_container" v-for="(event, index) in events" :key="index">
             <div class="col-md-4">
               <img :src="event.image_url" :alt="'Event: ' + event.name" class="event_img img_max" />
             </div>
@@ -202,12 +202,8 @@ export default {
       var month_heading = ''
       var _this = this
       _.forEach(events, function(value, key) {
-        var today = moment.tz(_this.timezone).format()
-        var showOnWebDate = moment
-          .tz(value.show_on_web_date, _this.timezone)
-          .format()
         var today_month = moment.tz(_this.timezone).format('MM-YYYY')
-        if (today >= showOnWebDate) {
+        // if (today >= showOnWebDate) {
           var start_month = moment
             .tz(value.start_date, _this.timezone)
             .format('MM-YYYY')
@@ -251,7 +247,7 @@ export default {
           }
 
           showEvents.push(value)
-        }
+       // }
       })
       showEvents = _.orderBy(showEvents, function(o) {
         return o.end_date
@@ -267,7 +263,7 @@ export default {
         var showOnWebDate = moment
           .tz(value.show_on_web_date, _this.timezone)
           .format()
-        if (today >= showOnWebDate) {
+        // if (today >= showOnWebDate) {
           if (value.promotionable_type == 'Store') {
             var store = _.find(_this.processedStores, function(o) {
               return o.id === value.promotionable_id
@@ -298,7 +294,7 @@ export default {
           }
 
           showPromos.push(value)
-        }
+        // }
       })
       var sortedPromos = _.orderBy(showPromos, [
         function(o) {
