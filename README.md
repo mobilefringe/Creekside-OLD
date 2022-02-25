@@ -1,4 +1,4 @@
-## This repo is deprecated, new repo can be found at - https://bitbucket.org/mobilefringe/shopdolphinmall.com/src/master/
+## This repo is deprecated, new repo can be found at - https://bitbucket.org/mobilefringe/creeksidetowncenter.com/src/main/
 # creekside
 
 > My spectacular website
